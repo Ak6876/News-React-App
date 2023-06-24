@@ -22,10 +22,21 @@ export class News extends Component {
             articles: [],
             loading: true,
             page: 1,
-            totalResults:0
+            totalResults:0,
+            error: null, 
+            errorInfo: null
         }
         document.title = `${this.CapitalizeFirst(this.props.category)} - News`;
     }
+    async componentDidCatch(error, errorInfo) {
+        this.setState({
+            error: error,
+            errorInfo: errorInfo
+          })
+          if (this.setState.errorInfo) {
+            document.title=`${this.state.errorInfo}`
+          }
+        }
     updateNews = async () => {
         this.props.setProgress(0)
         const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&page=${this.state.page}&apiKey=${this.props.apikey}&pageSize=${this.props.pageSize}`;
